@@ -23,6 +23,11 @@ def get_current_turn_player_id(game_html: str) -> str:
 def get_player_info(game_html: str):
     return json.loads(re.findall(r'let\s+playersInfo\s*=\s*({.*?});', game_html)[0])
 
+def get_usernames_from_game(game_html: str):
+    # Extract the awbw usernames from the player info Json.
+    awbw_usernames = [player_id['users_username'] for player_id in get_player_info(game_html).values()]
+    return awbw_usernames
+
 def get_username_from_player_id(player_id: str, player_info_json: str) -> str:
     return player_info_json[player_id]["users_username"]
 
@@ -45,6 +50,7 @@ def main():
     game_session_html = get_game_html("1164260")
     print(is_valid_game(game_session_html, "1164260"))
     print(is_game_ended(game_session_html))
+    print(get_usernames_from_game(game_session_html))
     #print(game_session_html)
     #game_session_html = get_game_html("1160554")
     current_turn_player_id = get_current_turn_player_id(game_session_html)
