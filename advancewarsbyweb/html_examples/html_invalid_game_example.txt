@@ -1,0 +1,207 @@
+  <!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>View Game - AWBW  
+</title>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.75">
+<link rel="stylesheet" href="css/awbw_minify.css?1714434090" type="text/css">
+<link rel="stylesheet" type="text/css" href="css/header.css?1714434090">
+<link rel="stylesheet" type="text/css" href="css/main.css?1714434090">
+<link rel="stylesheet" type="text/css" href="css/slideshow.css?1714434090">
+<link rel="stylesheet" type="text/css" href="css/game.css?1714434090">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+      <link rel="stylesheet" href="css/calculator_new.css?1714434090">
+      <link rel="stylesheet" href="css/messages.css?1714434090">
+      <link rel="stylesheet" href="css/layout.css?1714434090">
+<link rel="shortcut icon" href="https://awbw.amarriner.com/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://awbw.amarriner.com/favicon.ico" type="image/x-icon">
+<script type="text/javascript">
+   var showOverlib;
+   function popScreenshot(games_id, width, height) {
+      features = 'status=no,resizable=no,menubar=no,titlebar=no,location=no,hotkeys=no,width=' + width + ',height=' + height;
+      window.open('screenshot.php?games_id=' + games_id, 'SCREENSHOT', features);
+   }
+
+   function saveScreenshot(games_id, width, height) {
+      features = 'status=no,resizable=no,menubar=no,titlebar=no,location=no,hotkeys=no,width=' + width + ',height=' + height;
+      window.open('screenshot.php?save=1&games_id=' + games_id, 'SCREENSHOT', features);
+   }
+   function move_check(query, url) {
+      var reply = confirm(query);
+      if (reply) {
+         this.location.href = url;
+      }
+   }
+
+</script>
+</head>
+<body>
+<!-- Begin Page (1714893689) (3:21:29) -->
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:900;"></div>
+<script type="text/javascript" language="JavaScript" src="js/overlib_mini_minify.js?v=1.0"></script>
+
+<div id="fixed-header-wrapper">
+    <nav id="top-header-nav">
+        <div id="above-nav"></div>
+        <div id="logo-background2">
+            <a href="/" style="display: block;">
+                <img id="logo" height=70 width=170 src="terrain/awbwlogo5.gif">
+            </a>
+        </div>
+        
+        <ul id="nav-options" style="margin: auto;">
+
+        
+            <!-- <span style="position: absolute; top: -36px; left: 5px; color: red">Announcement text here.</span> -->
+
+        
+         
+            <li id="login-button" style="padding-left: 15px; padding-right: 15px;">
+                <label id="login-box-button" for="login-box-toggle">Login</label>
+                <input id="login-box-toggle" type="checkbox">
+
+                <!-- JS Code for login stuff is in footer.php -->
+                <div id="login-box">
+                    <div id="login-tab">
+                        <span id="login-err"></span>
+                                                <form class="login-form">
+                            Username <input class="login-input" type="text"><br>
+                            Password <input class="login-input" type="password">
+                            
+                            <span 
+                                class="small_text underline pointer login-forgot-password">
+                                Forgot Password?
+                            </span>
+    
+                            <input id="login" type="submit" value="LOG IN">
+                            <hr/>
+                        </form>
+    
+                        <p>Don't have an account?</p>
+                        <div id="register"><a href="register.php" style="display: block; width: 100%; height: 100%;"><span style="display:block; text-align: center; padding-top: 4px;">REGISTER</span></a></div>
+    
+                        <div class="login-box-arrow up-arrow"></div>
+
+                    </div>
+
+                    <!-- Forgot password tab -->
+                    <div id="forgot-password-tab" style="display: none">
+                        <i class="forgot-password-back fas fa-long-arrow-alt-left"></i>
+                        <div class="forgot-password-form login-form">
+                            <span class="forgot-password-desc small_text">Please enter your account name and email address. Instructions on how to reset your password will be sent.</span>
+
+                            Username
+                            <!-- Username field -->
+                            <input type="text" class="forgot-password-username login-input">
+
+                            Email
+                            <!-- Email field -->
+                            <input type="text" class="forgot-password-email login-input">
+                            <button class="forgot-password-submit">SEND</button>
+                        </div>
+                        <div class="forgot-password-res small_text" style="display: none"></div>
+                    </div>
+                </div>
+            </li>
+        
+            <li id="games-menu" onclick="void(0)">
+                Games
+                <ul id="games-dropdown" class="dropdown-menu">
+                    
+                    <li><a class="dropdown-menu-link" href="live_queue.php?rated=false&bnew=true">Live Queue</a></li>
+
+                    <div class="arrow up-arrow"></div>
+                    
+                    <li><a class="dropdown-menu-link" href="gamescurrent_all.php">View Active</a></li>
+                    <li><a class="dropdown-menu-link" href="gamescompleted.php">View Completed</a></li>
+                </ul>
+            </li>
+
+            <li id="competitions-menu" onclick="void(0)">
+                
+                Competitions
+                <ul id="competitions-dropdown" class="dropdown-menu">
+                    <li><a class="dropdown-menu-link" href="newleague.php">Global League</a></li>
+                    <li><a class="dropdown-menu-link" href="live_queue.php">Live League</a> <span id="dropdown-alert"><img src="terrain/newicon.png"></span></li>
+                    <li>
+                        <a class="dropdown-menu-link" href="viewtournament.php">Tournaments</a>
+                                            
+                        <div class="arrow up-arrow"></div>
+                    </li>
+
+                                    </ul>
+            </li>
+
+            <li id="design-maps-menu" onclick="void(0)">
+                Design Maps
+                <ul id="design-maps-dropdown" class="dropdown-menu">
+                    <li><a class="dropdown-menu-link" href="searchmaps.php">Search Maps</a></li>
+                    <li><a class="dropdown-menu-link" href="recentmaps.php">Recent Maps</a></li>
+                    <li><a class="dropdown-menu-link" href="categories.php">Categories</a></li>
+                                        <div class="arrow up-arrow"></div>
+                </ul>
+            </li>
+
+            <li id="right-side-menu">
+                <li id="contest-menu" onclick="void(0)">
+                    
+                    <a href="custom_army_contest.php">Contest</a>
+                </li>
+                <li id="community-menu" onclick="void(0)">
+                    Community
+                    <ul id="community-dropdown" class="dropdown-menu">
+                        <li><a class="dropdown-menu-link" href="users.php">Search Users</a></li>
+                        <li><a class="dropdown-menu-link" href="discord.php">Discord Chat</a></li>
+                        <li><a class="dropdown-menu-link" href="https://www.reddit.com/r/AWBW/">Reddit (r/AWBW)</a></li>
+                        <li>
+                                <span class="main-text"><a class="dropdown-menu-link" style="padding-right: 0px;" href="https://isndev.forumotion.co.uk/c2-advance-wars-by-web/">Forum</a></span>
+                                <span class="bracket-text">&nbsp;<a class="dropdown-menu-link" style="padding-left: 0px;" href="http://www.amarriner.com/awbw_forum/">[Archive]</a></span>
+                        </li>
+                        <li><a class="dropdown-menu-link" href="donate.php">Donate</a></li>
+                        <div class="arrow up-arrow"></div>
+                    </ul>
+                </li>
+                <li id="tools-menu" onclick="void(0)">
+                    Tools
+                    <ul id="tools-dropdown" class="dropdown-menu">
+                        <li><a class="dropdown-menu-link" href="moveplanner.php">Move Planner</a></li>
+                        <li><a class="dropdown-menu-link" href="calculator.php">Damage Calculator</a></li>
+                        
+                        
+                        <div class="arrow up-arrow"></div>
+                    </ul>
+                </li>
+                <li id="infos-menu" onclick="void(0)">
+                    
+                    Info
+                    <ul id="infos-dropdown" class="dropdown-menu">
+                        <li><a class="dropdown-menu-link" href="guide.php">FAQ</a></li>
+                        <li><a class="dropdown-menu-link" href="tutorials.php">Tutorials</a></li>
+                        <li id="changelog">
+
+                            <a class="dropdown-menu-link" href="changelog.php">Changelog</a>
+                            
+                        </li>
+                        <li><a class="dropdown-menu-link" href="chart.php">Charts</a></li>
+                        <li><a class="dropdown-menu-link" href="http://awbw.wikia.com/wiki/Advance_Wars_By_Web_Wiki">AWBW Wiki</a></li>
+                        <li><a class="dropdown-menu-link" href="https://warswiki.org/">Wars Wiki</a></li>
+                    </ul>
+                </li>
+
+                <li id="contact-menu">
+                    <a href="contact.php">Contact</a>
+                </li>
+
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div id="outer">
+
+    
+    <!-- <section id="main" style="overflow-x: scroll;"> -->
+    <section id="main">No game found with provided ID
