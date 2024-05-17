@@ -1,5 +1,6 @@
 from typing import Dict, Union
 from redbot.core import commands
+from discord.ext import tasks
 import discord
 
 from advancewarsbyweb.web_helper import (
@@ -18,6 +19,12 @@ class AdvanceWarsByWeb(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.game_id = None
+        self.awbw_to_discord_username_dict = {}
+        self.last_turn_user = None
+        self.turn_tracker_task = None  # Define the task as None initially
+        self.ctx = None  # Store the context
+
 
     @commands.group()
     @commands.is_owner()
@@ -83,7 +90,7 @@ class AdvanceWarsByWeb(commands.Cog):
             return
 
         try:
-            awbw_to_discord_username_dict = (
+            self.awbw_to_discord_username_dict = (
                 self.parse_awbw_to_discord_username_mappings(
                     game_html, awbw_to_discord_username_mappings
                 )
@@ -94,23 +101,60 @@ class AdvanceWarsByWeb(commands.Cog):
             )
             return
 
-        current_turn_awbw_username = self.get_current_turn_awbw_username(game_html)
-        current_turn_discord_username = awbw_to_discord_username_dict[
-            current_turn_awbw_username
-        ]
+        self.game_id = game_id
+        self.last_turn_user = None  # Reset the last turn user when starting a new tracker
+        self.ctx = ctx  # Store the context for use in the loop
 
-        discord_member_current_turn = discord.utils.get(
-            ctx.guild.members, name=current_turn_discord_username
+        if self.turn_tracker_task is None:
+            self.turn_tracker_task = self.turn_tracker_task_loop
+            self.turn_tracker_task.start()
+        elif not self.turn_tracker_task.is_running():
+            self.turn_tracker_task.start()
+        else:
+            await ctx.send("Turn tracker is already running.")
+
+    @tasks.loop(minutes=1)
+    async def turn_tracker_task_loop(self):
+        game_html = get_game_html(self.game_id)
+
+        if is_game_ended(game_html):
+            await self.ctx.send(f"Game {self.game_id} has ended. Stopping turn tracker.")
+            self.turn_tracker_task.cancel()
+            return
+
+        current_turn_awbw_username = self.get_current_turn_awbw_username(game_html)
+        current_turn_discord_username = self.awbw_to_discord_username_dict.get(
+            current_turn_awbw_username
         )
 
-        if discord_member_current_turn is None:
-            await ctx.send(
-                f"Could not find a discord server member with the username: {current_turn_discord_username}"
+        if current_turn_discord_username is None:
+            await self.ctx.send(
+                f"No Discord username mapping found for AWBW username: {current_turn_awbw_username}"
             )
-        else:
-            await ctx.send(
-                f"{discord_member_current_turn.mention} it is your turn for AWBW game {game_id}."
+            return
+
+        if current_turn_discord_username != self.last_turn_user:
+            discord_member_current_turn = discord.utils.get(
+                self.ctx.guild.members, name=current_turn_discord_username
             )
+
+            if discord_member_current_turn is None:
+                await self.ctx.send(
+                    f"Could not find a discord server member with the username: {current_turn_discord_username}"
+                )
+            else:
+                await self.ctx.send(
+                    f"{discord_member_current_turn.mention} it is your turn for AWBW game {self.game_id}."
+                )
+                self.last_turn_user = current_turn_discord_username
+
+    @turn_tracker_task_loop.before_loop
+    async def before_turn_tracker_task(self):
+        await self.bot.wait_until_red_ready()
+
+    def cog_unload(self):
+        if self.turn_tracker_task:
+            self.turn_tracker_task.cancel()
 
     def get_current_turn_awbw_username(self, game_html: str):
         current_turn_player_id = get_current_turn_player_id(game_html)
