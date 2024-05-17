@@ -1,5 +1,6 @@
 from typing import Dict, Union
 from redbot.core import commands
+import discord
 
 from advancewarsbyweb.web_helper import (
     get_current_turn_player_id,
@@ -97,9 +98,19 @@ class AdvanceWarsByWeb(commands.Cog):
         current_turn_discord_username = awbw_to_discord_username_dict[
             current_turn_awbw_username
         ]
-        await ctx.send(
-            f"@{current_turn_discord_username} it is your turn for AWBW game {game_id}."
+
+        discord_member_current_turn = discord.utils.get(
+            ctx.guild.members, name=current_turn_discord_username
         )
+
+        if discord_member_current_turn is None:
+            await ctx.send(
+                f"Could not find a discord server member with the username: {current_turn_discord_username}"
+            )
+        else:
+            await ctx.send(
+                f"{discord_member_current_turn.mention} it is your turn for AWBW game {game_id}."
+            )
 
     def get_current_turn_awbw_username(self, game_html: str):
         current_turn_player_id = get_current_turn_player_id(game_html)
