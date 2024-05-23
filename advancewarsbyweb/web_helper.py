@@ -1,5 +1,7 @@
+from datetime import datetime, time
 import json
 import re
+import pytz
 import requests
 
 AWBW_URL = "https://awbw.amarriner.com/"
@@ -47,6 +49,27 @@ def is_game_ended(game_html: str):
     if match:
         return False
     return True
+
+def is_server_under_maintenance() -> bool:
+    # Server maintenance occurs between 3:04 AM - 3:10 AM EST.
+        # Define the EST timezone
+    est = pytz.timezone('US/Eastern')
+    
+    # Get the current time in UTC
+    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+    
+    # Convert the current UTC time to EST
+    est_now = utc_now.astimezone(est)
+    
+    # Define the maintenance window
+    maintenance_start = time(3, 0, 0)   # 3:00 AM
+    maintenance_end = time(3, 15, 0)    # 3:15 AM
+    
+    # Check if the current time in EST is within the maintenance window
+    if maintenance_start <= est_now.time() < maintenance_end:
+        return True
+    else:
+        return False
 
 
 def is_valid_game(game_html: str, game_id: str):

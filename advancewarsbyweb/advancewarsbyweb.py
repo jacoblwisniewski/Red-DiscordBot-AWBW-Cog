@@ -10,6 +10,7 @@ from advancewarsbyweb.web_helper import (
     get_username_from_player_id,
     get_usernames_from_game,
     is_game_ended,
+    is_server_under_maintenance,
     is_valid_game,
 )
 
@@ -121,6 +122,10 @@ class AdvanceWarsByWeb(commands.Cog):
 
     @tasks.loop(minutes=1)
     async def turn_tracker_task_loop(self):
+        # If server is under maintenance then do nothing.
+        if is_server_under_maintenance():
+            return
+
         for game_id, game_data in self.tracked_games.items():
             awbw_to_discord_username_dict = game_data["users"]
             game_html = get_game_html(game_id)
